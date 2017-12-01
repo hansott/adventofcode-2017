@@ -9,5 +9,10 @@ rotate input = tail input ++ [head input]
 inverseCaptcha :: String -> Int
 inverseCaptcha input = sum $ map (\(a, b) -> if a == b then digitToInt a else 0) (zip (rotate input) input)
 
+inverseCaptcha2 :: String -> Int
+inverseCaptcha2 input = sum $ map (\(a, b) -> if a == b then digitToInt a else 0) (zip (iterate rotate input !! quot (length input) 2) input)
+
 main :: IO ()
-main = putStrLn $ show $ inverseCaptcha puzzleInput
+main = do
+    putStrLn $ show $ inverseCaptcha puzzleInput
+    putStrLn $ show $ inverseCaptcha2 puzzleInput
