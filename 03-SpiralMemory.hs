@@ -38,12 +38,9 @@ nextDirection West = North
 spiral :: Int -> Spiral
 spiral number = iterate addPoint createSpiral !! (number - 1)
 
-input :: String
-input = "312051"
-
-toInt :: String -> Int
-toInt x = read x :: Int
+distance :: Point -> Int
+distance (Point x y _) = abs x + abs y
 
 main :: IO ()
 main = do
-    putStrLn "yo"
+    putStrLn $ show $ distance $ point $ spiral 312051
