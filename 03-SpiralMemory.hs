@@ -2,30 +2,26 @@ data Direction = North | East | South | West deriving (Show)
 
 data Point = Point { x :: Int, y :: Int, number :: Int } deriving (Show)
 
-data Spiral = Spiral { points :: [Point], direction :: Direction, size :: Int, step :: Int, turns :: Int } deriving (Show)
+data Spiral = Spiral { point :: Point, direction :: Direction, size :: Int, step :: Int, turns :: Int } deriving (Show)
 
 addPoint :: Spiral -> Spiral
-addPoint (Spiral currentPoints direction size step turns) =
+addPoint (Spiral currentPoint direction size step turns) =
     if shouldTurn
     then
         if shouldIncreaseSize
-        then Spiral { points = currentPoints ++ [nextIfTurn], direction = nextDirection direction, size = size + 1, step = 1, turns = 0 }
-        else Spiral { points = currentPoints ++ [nextIfTurn], direction = nextDirection direction, size = size, step = 1, turns = turns + 1 }
-    else Spiral { points = currentPoints ++ [next], direction = direction, size = size, step = step + 1, turns = turns }
-    where lastPoint = last currentPoints
-          next = nextPoint lastPoint direction
-          nextIfTurn = nextPoint lastPoint direction
+        then Spiral { point = nextIfTurn, direction = nextDirection direction, size = size + 1, step = 1, turns = 1 }
+        else Spiral { point = nextIfTurn, direction = nextDirection direction, size = size, step = 1, turns = turns + 1 }
+    else Spiral { point = next, direction = direction, size = size, step = step + 1, turns = turns }
+    where next = nextPoint currentPoint direction
+          nextIfTurn = nextPoint currentPoint direction
           shouldTurn = size == step
           shouldIncreaseSize = turns == 2
 
 startPoint :: Point
 startPoint = Point { x = 0, y = 0, number = 1 }
 
-startDirection :: Direction
-startDirection = West
-
 createSpiral :: Spiral
-createSpiral = Spiral { points = [startPoint], direction = startDirection, size = 1, step = 1, turns = 0 }
+createSpiral = Spiral { point = startPoint, direction = West, size = 1, step = 1, turns = 1 }
 
 nextPoint :: Point -> Direction -> Point
 nextPoint (Point x y number) North = Point { x = x, y = y + 1, number = number + 1 }
