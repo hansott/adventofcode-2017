@@ -2,12 +2,15 @@ import Data.List
 
 type Passphrase = String
 
-isValidPassphrase :: Passphrase -> Bool
-isValidPassphrase passphrase = (length $ wordsOfPassphrase) == (length $ nub $ wordsOfPassphrase)
+hasUniqueWords :: Passphrase -> Bool
+hasUniqueWords passphrase = (length $ wordsOfPassphrase) == (length $ nub $ wordsOfPassphrase)
     where wordsOfPassphrase = words passphrase
+
+passphrasePolicy1 :: Passphrase -> Bool
+passphrasePolicy1 = hasUniqueWords
 
 main :: IO ()
 main = do
     contents <- readFile "04-HighEntropyPassphrases.txt"
-    validPasshprases <- return $ filter isValidPassphrase $ lines contents
-    putStrLn $ "There are " ++ (show $ length validPasshprases) ++ " valid passphrase(s)"
+    validPasshprases <- return $ filter passphrasePolicy1 $ lines contents
+    putStrLn $ "There are " ++ (show $ length validPasshprases) ++ " valid passphrase(s) for policy 1"
